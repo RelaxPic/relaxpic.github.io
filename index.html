@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
     <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script src="https://unpkg.com/docsify-gitalk@1.0.0/dist/docsify-gitalk.min.js"></script>
 </head>
 <body>
 <nav>
@@ -27,7 +31,14 @@
                 } else {
                     return 'edit on git'
                 }
-            })]
+            })],
+        gitalk: {
+            clientID: '447f9129a43ead9f0045',
+            clientSecret: 'a4f2e07cb27eb88ef4c456e577d962a6b38ce3fa',
+            repo: 'https://github.com/RelaxPic/relaxpic.github.io',
+            owner: 'relaxpic',
+            admin: ['relaxpic']
+        }
 
     }
     if (typeof navigator.serviceWorker !== 'undefined') {
