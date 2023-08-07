@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+    <meta charset="UTF-8">
+    <title>慢图浏览</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="description" content="Description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+    <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
 </head>
 <body>
-  <div id="app"></div>
-  <script>
+<nav>
+    <a href="https://www.pgyer.com/mtll_dev">测试版本下载地址</a>
+</nav>
+<div id="app"></div>
+<script>
     window.$docsify = {
-      name: '',
-      repo: '',
-     loadSidebar: true
+        name: '',
+        loadSidebar: true,
+        repo: "https://github.com/RelaxPic/relaxpic.github.io",
+        relativePath: true,
+        plugins: [
+            EditOnGithubPlugin.create("https://github.com/RelaxPic/relaxpic.github.io/blob/master/", null, function (file) {
+                if (file.indexOf('en') === -1) {
+                    return '编辑此页面'
+                } else {
+                    return 'edit on git'
+                }
+            })]
+
     }
-  </script>
-  <!-- Docsify v4 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('sw.js')
+    }
+</script>
+<!-- Docsify v4 -->
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
 </body>
 </html>
