@@ -33,7 +33,9 @@
 
     }
     if (typeof navigator.serviceWorker !== 'undefined') {
-        navigator.serviceWorker.register('sw.js')
+        if (!location.host.startsWith("localhost")) {
+            navigator.serviceWorker.register('sw.js')
+        }
     }
 </script>
 <!-- Docsify v4 -->
