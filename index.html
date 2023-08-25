@@ -7,14 +7,21 @@
     <meta name="description" content="Description">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
     <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
 </head>
 <body>
 <nav>
     <a href="https://www.pgyer.com/mtll_dev">测试版本下载地址</a>
 </nav>
-<div id="app"></div>
+<div id="app">
+    <script src="https://utteranc.es/client.js"
+            repo="relaxpic/relaxpic.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+</div>
 <script>
     window.$docsify = {
         name: '',
@@ -28,7 +35,23 @@
                 } else {
                     return 'edit on git'
                 }
-            })],
+            }),
+		function pageFooter(hook, vm) {
+      var footer = [
+        '<script src="https://utteranc.es/client.js"\n' +
+        '        repo="Relaxpic/relaxpic.github.io"\n' +
+        '        issue-term="pathname"\n' +
+        '        theme="github-light"\n' +
+        '        async>' +
+        '<\/script>',
+      ].join('');
+
+      hook.afterEach(function (html) {
+        return html + footer;
+      });
+    },
+	],
+
         gitalk: {}
 
     }
@@ -40,17 +63,7 @@
 </script>
 <!-- Docsify v4 -->
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: '447f9129a43ead9f0045',
-        clientSecret: 'a4f2e07cb27eb88ef4c456e577d962a6b38ce3fa',
-        repo: 'relaxpic.github.io',
-        owner: 'relaxpic',
-        admin: ['relaxpic'],
-        title: location.href
-    });
-</script>
+
 </body>
 </html>
