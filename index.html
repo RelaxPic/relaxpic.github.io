@@ -13,15 +13,7 @@
 <nav>
     <a href="https://www.pgyer.com/mtll_dev">测试版本下载地址</a>
 </nav>
-<div id="app">
-    <script src="https://utteranc.es/client.js"
-            repo="relaxpic/relaxpic.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-    </script>
-</div>
+<div id="app"></div>
 <script>
     window.$docsify = {
         name: '',
@@ -36,24 +28,9 @@
                     return 'edit on git'
                 }
             }),
-		function pageFooter(hook, vm) {
-      var footer = [
-        '<script src="https://utteranc.es/client.js"\n' +
-        '        repo="Relaxpic/relaxpic.github.io"\n' +
-        '        issue-term="pathname"\n' +
-        '        theme="github-light"\n' +
-        '        async>' +
-        '<\/script>',
-      ].join('');
-
-      hook.afterEach(function (html) {
-        return html + footer;
-      });
-    },
-	],
-
-        gitalk: {}
-
+            function pageFooter(hook, vm) {
+            },
+        ],
     }
     if (typeof navigator.serviceWorker !== 'undefined') {
         if (!location.host.startsWith("localhost")) {
