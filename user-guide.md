@@ -20,11 +20,11 @@ WebDAV备份功能需要你有一个WebDAV服务器，如果你没有，可以�
 
    linux 下面配置为 `/home/xiaoming/webdav`
 
-   windows 下面配置为 `D:\webdav`
+   windows 下面配置为 `C:\Users\xiaoming\webdav`
 
    macos  下面配置为 `/Users/xiaoming/webdav` 
  
-   上面的路径建议配置为你的用户目录下面，这样不会出现权限问题。目前Alist 不能配置为根目录`/`，建议配置为用户目录下面，这是一个已知的BUG。
+   上面的路径建议配置为你的用户目录下面，其中`xiaoming`可以替换成你自己的用户名， 这样会最大程度避免权限问题。目前Alist 不能配置为根目录`/`，建议配置为用户目录下面，这是一个Alist的一个已知的BUG。
 
 6. 其他的配置如果没有其他的需求，可以不需要修改。
 
