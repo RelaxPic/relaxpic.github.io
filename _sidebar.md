@@ -1,4 +1,3 @@
-* [主页](/)
 * [更新历史](changelog.md)
 * [使用说明](user-guide.md)
 * [常见问题](qaa.md)
