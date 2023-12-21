@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="static/css/vue.css">
     <script src="static/js/docsify-edit-on-github.js"></script>
+    <link href="static/css/lightbox.min.css" rel="stylesheet" />
 </head>
 <body>
 <nav>
@@ -21,6 +22,10 @@
         loadSidebar: true,
         repo: "https://github.com/RelaxPic/relaxpic.github.io",
         relativePath: true,
+        // 初始化Fancybox
+        afterRender: function() {
+            $('[data-fancybox]').fancybox();
+        },
         plugins: [
             EditOnGithubPlugin.create("https://github.com/RelaxPic/relaxpic.github.io/blob/master/", null, function (file) {
                 if (file.indexOf('en') === -1) {
@@ -41,5 +46,6 @@
 </script>
 <!-- Docsify v4 -->
 <script src="static/js/docsify.min.js"></script>
+<script src="static/js/lightbox-plus-jquery.min.js"></script>
 </body>
 </html>
