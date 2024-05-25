@@ -43,11 +43,11 @@
             navigator.serviceWorker.register('sw.js')
         }
     }
-    fetch("/version").then(res => {
-            var version = localStorage.getItem("version");
-            if(version != res.body){
+    fetch("/version").then(res => res.text()).then(version => {
+            const versionInCache = localStorage.getItem("version");
+            if(versionInCache !== version){
                 window.location.reload();
-                localStorage.setItem("version",res.body)
+                localStorage.setItem("version",version)
                 window.alert("页面已经强制刷新")
             }
     }
