@@ -72,7 +72,6 @@
     if(needFresh){
         console.log("没有数据,需要强制刷新")
         refresh();
-
     }else  if(Date.now() - parseInt(ts) > 1000 * 3600){
         console.log("超过时间范围,需要更新数据")
         refresh();
