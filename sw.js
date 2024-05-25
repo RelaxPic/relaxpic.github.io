@@ -55,11 +55,8 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // Skip some of cross-origin requests, like those for Google Analytics.
   let url = new URL(event.request.url);
-  if(url.pathname === "/version"){
-    event.respondWith(fetch(event.request));
-    return;
-  }
-  if (HOSTNAME_WHITELIST.indexOf(url.hostname) > -1) {
+  let isVersionRequest = url.pathname === "/version";
+  if (HOSTNAME_WHITELIST.indexOf(url.hostname) > -1 || isVersionRequest) {
     // Stale-while-revalidate
     // similar to HTTP's stale-while-revalidate: https://www.mnot.net/blog/2007/12/12/stale
     // Upgrade from Jake's to Surma's: https://gist.github.com/surma/eb441223daaedf880801ad80006389f1
