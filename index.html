@@ -43,6 +43,14 @@
             navigator.serviceWorker.register('sw.js')
         }
     }
+    fetch("/version").then(res => {
+            var version = localStorage.getItem("version");
+            if(version != res.body){
+                window.location.reload();
+                window.alert("页面已经强制刷新")
+            }
+    }
+    )
 </script>
 <!-- Docsify v4 -->
 <script src="static/js/docsify.min.js"></script>
