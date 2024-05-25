@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="static/css/vue.css">
     <script src="static/js/docsify-edit-on-github.js"></script>
-    <link href="static/css/lightbox.min.css" rel="stylesheet" />
+    <link href="static/css/lightbox.min.css" rel="stylesheet"/>
 </head>
 <body>
 <nav>
@@ -23,7 +23,7 @@
         repo: "https://github.com/RelaxPic/relaxpic.github.io",
         relativePath: true,
         // 初始化Fancybox
-        afterRender: function() {
+        afterRender: function () {
             $('[data-fancybox]').fancybox();
         },
         plugins: [
@@ -43,14 +43,40 @@
             navigator.serviceWorker.register('sw.js')
         }
     }
-    fetch("/version").then(res => res.text()).then(version => {
-            const versionInCache = localStorage.getItem("version");
-            if(versionInCache !== version){
-                window.location.reload();
-                localStorage.setItem("version",version)
-            }
+
+</script>
+<script>
+    console.log("开始校验")
+    let ts = localStorage.getItem("lastTimestamp");
+    let needFresh = false;
+    if(!ts){
+        ts = Date.now();
+        localStorage.setItem("lastTimestamp", ts);
+        needFresh = true;
     }
-    )
+    function refresh() {
+        const ts = Date.now();
+        fetch("/version?v=" + ts).then(res => res.text()).then(version => {
+                localStorage.setItem("lastTimestamp", ts);
+                const versionInCache = localStorage.getItem("version");
+                if (versionInCache !== version) {
+                    localStorage.setItem("version", version)
+                    console.log("远程版本版本: " + version + ",本地版本:" + versionInCache + ",更新了")
+                    window.location.reload();
+                } else {
+                    console.log("远程版本版本: " + version + ",本地版本:" + versionInCache + "不需要更新")
+                }
+            }
+        )
+    }
+    if(needFresh){
+        console.log("没有数据,需要强制刷新")
+        refresh();
+
+    }else  if(Date.now() - parseInt(ts) > 1000 * 3600){
+        console.log("超过时间范围,需要更新数据")
+        refresh();
+    }
 </script>
 <!-- Docsify v4 -->
 <script src="static/js/docsify.min.js"></script>
