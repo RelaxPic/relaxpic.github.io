@@ -55,7 +55,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // Skip some of cross-origin requests, like those for Google Analytics.
   let url = new URL(event.request.url);
-  if(url.pathname === "version"){
+  if(url.pathname === "/version"){
     event.respondWith(fetch(event.request));
     return;
   }
