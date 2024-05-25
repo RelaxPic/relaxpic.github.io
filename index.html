@@ -46,8 +46,8 @@
     fetch("/version").then(res => res.text()).then(version => {
             const versionInCache = localStorage.getItem("version");
             if(versionInCache !== version){
+                window.location.reload();
                 localStorage.setItem("version",version)
-                window.alert("页面已经强制刷新")
             }
     }
     )
