@@ -47,6 +47,7 @@
             var version = localStorage.getItem("version");
             if(version != res.body){
                 window.location.reload();
+                localStorage.setItem("version",res.body)
                 window.alert("页面已经强制刷新")
             }
     }
