@@ -40,7 +40,6 @@ _慢图浏览_ 是一款由 _慢图浏览开发团队_ （以下简称“我们�
 | 第三方名称       | 第三方提供的功能  | 第三方收集的个人信息 | 第三方隐私协议链接                                |
 |-------------|-----------| -------------------- | ------------------------------------------------- |
 | 腾讯Bugly     | 收集崩溃，解决闪退 | 设备信息             |https://privacy.qq.com/document/preview/fc748b3d96224fdb825ea79e132c1a56      |
-| 微软AppCenter |  收集崩溃，解决闪退      | 设备信息             |https://learn.microsoft.com/zh-cn/appcenter/general/app-center-security |
 
 
 ### 2. 信息的存储
