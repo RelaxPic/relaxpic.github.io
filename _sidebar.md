@@ -5,5 +5,6 @@
 * [下载应用](download.md)
 * [国际化](i18n.md)
 * [如何保护您的隐私？](protect-your-privacy.md)
+* [安全报告](safe-report.md)
 * [用户协议](agreement.md)
 * [隐私政策](privacy-policy.md)

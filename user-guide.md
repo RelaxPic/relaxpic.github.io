@@ -122,16 +122,20 @@
 
 #### 1. WebDAV备份
 
-慢图浏览目前只支持同步路径的方式同步照片，并且在你的WebDAV目录下面创建一个`/慢图浏览/public/`目录，用于存放公开的照片，未来隐私空间都会存放在`/慢图浏览/private/`目录下面。
+慢图浏览目前只支持同步路径的方式同步照片，并且需要用户在添加的时候指定公共项目和隐私空间的上传路径。
 
-未来也会支持以日期的方式存放照片，例如`/慢图浏览/public/2021/01/01/`，这样可以方便的查看某一天的照片。目前国内的小米，华为，OPPO，VIVO等手机都是使用目录的方式存放照片的，例如`/DCIM/Camera/`，所以慢图浏览也是使用目录的方式存放照片。
-但是Google，三星的相册依然使用的是日期目录的方式来备份。所以慢图浏览会支持两种方式，目录和日期的方式来备份照片。
+在添加WebDAV账户设置的时候，建议用户点击测试连接用于测试WebDav的是否配置正确的读写权限，以及WebDAV是否允许上传一些大体积文件，这个检测流程可能会耗费一些时间。
 
-WebDAV备份功能需要你有一个WebDAV服务器，如果你没有，可以使用[Alist](https://alist.nn.ci/)或者[flydav](https://github.com/pluveto/flydav/)搭建一个。
+部分网关(服务器或者反向代理服务器)比如nginx的默认配置 ` client_max_body_size 5m; `，建议配置为你期待的最大文件大小比如 ` client_max_body_size 5G; `，当前还有一些其他的网关比如openresty，apacha httpd，haproxy，tomcat server等， 这里不再一一列举出来，请自行使用搜索引擎搜索如何解决body体积的限制。
+
+WebDAV备份功能需要你有一个WebDAV服务器，如果你没有，可以使用[Alist](https://alist.nn.ci/), [flydav](https://github.com/pluveto/flydav/)或者[nextcloud](https://github.com/nextcloud/server)搭建一个。
 
 搭建好Alist Webdav后，需要创建WebDAV服务。
 
 ##### Alist 配置
+[项目地址](https://github.com/alist-org/alist)
+
+
 1. 打开Alist，点击左边菜单栏存储。
 2. 点击上方添加按钮。
 3. 驱动选择： 本地存储
@@ -139,11 +143,8 @@ WebDAV备份功能需要你有一个WebDAV服务器，如果你没有，可以�
 5. 根文件夹路径： 
 
    linux 下面配置为 `/home/xiaoming/webdav`
-
    windows 下面配置为 `C:\Users\xiaoming\webdav`
-
    macos  下面配置为 `/Users/xiaoming/webdav` 
- 
    上面的路径建议配置为你的用户目录下面，其中`xiaoming`可以替换成你自己的用户名， 这样会最大程度避免权限问题。目前Alist 不能配置为根目录`/`，建议配置为用户目录下面，这是一个Alist的一个已知的BUG。
 
 6. 其他的配置如果没有其他的需求，可以不需要修改。
@@ -152,6 +153,7 @@ WebDAV备份功能需要你有一个WebDAV服务器，如果你没有，可以�
 
 
 ##### flydav 配置
+[项目地址](https://github.com/pluveto/flydav)
 
 1. flydav 的path 配置为 `/webdav` ， 这里的 `/webdav` 可以换成你喜欢的路径。
 2. 启动flydav后，可以在慢图浏览中配置账号功能。
@@ -160,3 +162,7 @@ WebDAV备份功能需要你有一个WebDAV服务器，如果你没有，可以�
 
 由于慢图浏览暂时不支持自签名证书，所以如果你的WebDAV服务器使用的是自签名证书，可能会出现无法登录账号的情况。这种情况依然可以使用`Zerotier`或者`frp`，内网穿透的方式来访问你的WebDAV服务器，或者配置`ACME`的https证书来访问你的WebDAV服务器。
 
+##### nextcloud 配置
+[项目地址](https://github.com/nextcloud/server)
+
+打开nextcloud的网页页面后，请点击左下角的文件设置在弹出的弹窗中获取WebDAV的地址
