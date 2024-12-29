@@ -1,0 +1,2 @@
+- name: Weblate Locale Linter
+  uses: WeblateOrg/locale_lint@v0.2.2
