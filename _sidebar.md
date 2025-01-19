@@ -8,3 +8,4 @@
 * [安全报告](safe-report.md)
 * [用户协议](agreement.md)
 * [隐私政策](privacy-policy.md)
+* [开源许可](open-source-license.md)
