@@ -9,6 +9,42 @@
     <link rel="stylesheet" href="static/css/vue.css">
     <script src="static/js/docsify-edit-on-github.js"></script>
     <link href="static/css/lightbox.min.css" rel="stylesheet"/>
+    <script>
+        let gsTrackingId;
+        if (location.host === "relaxpic.com") {
+            gsTrackingId = "G-KFPZCE8PNJ";
+        } else if(location.host === "relaxpic.cn"){
+            gsTrackingId = "G-VT87SWQH6J";
+        }
+        if(gsTrackingId){
+            const script = document.createElement("script");
+            script.async = true;
+            script.src = "https://www.googletagmanager.com/gtag/js?id=" + gsTrackingId;
+            document.head.appendChild(script);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', gsTrackingId);
+        }
+    </script>
+    <script>
+        let bdTrackingId;
+        if (location.host === "relaxpic.com") {
+            bdTrackingId = "d634ee0f7f6659dd48063c8435062ff9";
+        } else if(location.host === "relaxpic.cn"){
+            bdTrackingId = "891604474066f0cd7981a2e4dee55224";
+        }
+        if(bdTrackingId){
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?"+bdTrackingId;
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        }
+    </script>
+
 </head>
 <body>
 <nav>

@@ -1,8 +1,8 @@
 #### 慢图已经开启Google play 封闭测试。 
 
 ##### 1.参与条件: 
-1. 拥有google play的账号
-2. 能够正常的访问Google play 
+1. 拥有Google Play的账号
+2. 能够正常的访问Google Play 
 
 ##### 2.参与方式: 
 1. 先加入 Google group : https://play.google.com/apps/testing/com.shanjiancaofu.gallery.preview?authuser=1
