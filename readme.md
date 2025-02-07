@@ -5,7 +5,7 @@
 2. 能够正常的访问Google play 
 
 ##### 2.参与方式: 
-1. 先加入 Google group : https://groups.google.com/g/relaxpic
+1. 先加入 Google group : https://play.google.com/apps/testing/com.shanjiancaofu.gallery.preview?authuser=1
 2. 下载应用(必须加入上面的Group,才能下载): https://play.google.com/store/apps/details?id=com.shanjiancaofu.gallery.preview
 
 
