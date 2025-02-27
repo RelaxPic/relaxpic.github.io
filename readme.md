@@ -1,14 +1,3 @@
-#### 慢图已经开启Google play 封闭测试。 
-
-##### 1.参与条件: 
-1. 拥有Google Play的账号
-2. 能够正常的访问Google Play 
-
-##### 2.参与方式: 
-1. 先加入 Google group : https://play.google.com/apps/testing/com.shanjiancaofu.gallery.preview?authuser=1
-2. 下载应用(必须加入上面的Group,才能下载): https://play.google.com/store/apps/details?id=com.shanjiancaofu.gallery.preview
-
-
 #### 问: 为什么要做慢图浏览这样一个产品？慢图浏览有什么特点？
 对于安卓目前的照片的管理，我需要一个安全的照片管理软件，但是目前市面上的照片管理软件都是以云为中心的，并且鉴于国内相册的现状，我不想把我的照片放在别人的服务器上，所以我就自己做了一个。
 
