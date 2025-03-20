@@ -22,6 +22,10 @@
 #### 问: 遇到问题或不爽怎么办？
 请在应用内反馈，或者发邮件到support@relaxpic.com，我会尽快回复。
 
+####  慢图理念
+1. 长期维护,循序渐进的推进版本发布
+2. 认真做一件事到极致，越快约好，越简单越好
+
 
  <div>
       <a style="margin-right: 10px" href="static/images/preview/1.webp" data-lightbox="example-set" data-title="时间线"><img  src="static/images/preview/1.webp" width="200" height="447" alt=""/></a>
