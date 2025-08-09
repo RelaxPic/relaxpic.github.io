@@ -83,29 +83,29 @@
 
 </script>
 <script>
-    console.log("开始校验")
     let ts = localStorage.getItem("lastTimestamp");
-    let needFresh = false;
+    let needFresh = !ts;
     if(!ts){
         ts = Date.now();
         localStorage.setItem("lastTimestamp", ts);
-        needFresh = true;
     }
+/*    if(window.location.host === "127.0.0.1:8080"){
+        needFresh = true
+    }*/
     function refresh() {
         const ts = Date.now();
         fetch("/version?v=" + ts).then(res => res.text()).then(version => {
                 localStorage.setItem("lastTimestamp", ts);
-                const versionInCache = localStorage.getItem("version");
-                if (versionInCache !== version) {
-                    localStorage.setItem("version", version)
-                    console.log("远程版本版本: " + version + ",本地版本:" + versionInCache + ",更新了")
+                if (localStorage.getItem("version") !== version) {
+                    localStorage.setItem("version", version.trim())
                     window.location.reload();
-                } else {
-                    console.log("远程版本版本: " + version + ",本地版本:" + versionInCache + "不需要更新")
                 }
             }
         )
     }
+    window.addEventListener("focus",function () {
+        refresh();
+    })
     if(needFresh){
         console.log("没有数据,需要强制刷新")
         refresh();
