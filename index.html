@@ -77,7 +77,12 @@
     }
     if (typeof navigator.serviceWorker !== 'undefined') {
         if (!location.host.startsWith("localhost")) {
-            navigator.serviceWorker.register('sw.js')
+		navigator.serviceWorker.register('sw.js').then((re) => {
+			re.update();
+		}).catch((error) => {
+      			console.error(`Registration failed with ${error}`);
+
+		})
         }
     }
 
@@ -89,15 +94,23 @@
         ts = Date.now();
         localStorage.setItem("lastTimestamp", ts);
     }
-/*    if(window.location.host === "127.0.0.1:8080"){
+    if(window.location.host === "127.0.0.1:8080"){
         needFresh = true
-    }*/
+    }
     function refresh() {
         const ts = Date.now();
         fetch("/version?v=" + ts).then(res => res.text()).then(version => {
                 localStorage.setItem("lastTimestamp", ts);
+                console.log(`localStorage 版本: ${localStorage.getItem("version")} , 远程版本: ${version}`)
                 if (localStorage.getItem("version") !== version) {
                     localStorage.setItem("version", version.trim())
+                    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                        navigator.serviceWorker.controller.postMessage({
+                            action: 'FORCE_REFRESH_ON',
+                            version: version
+                        });
+                        console.log('已开启强制刷新模式');
+                    }
                     window.location.reload();
                 }
             }
