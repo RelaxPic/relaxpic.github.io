@@ -1,6 +1,6 @@
 <a href="/#/test_download">切换到测试版下载</a>
 
-# 最新正式版发布时间2025-10-17 版本0.1.49 ,下载地址
+# 最新正式版发布时间2025-11-13 版本0.1.50 ,下载地址
 1.  [Google Play(推荐)](https://play.google.com/store/apps/details?id=com.shanjiancaofu.gallery.preview)
 2.  [123网盘](https://www.123pan.com/s/gBTtVv-8m62d.html)
 3.  [Loadly.io](https://loadly.io/relaxpic)
