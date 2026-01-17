@@ -5,6 +5,8 @@
 
 1.  [Google Play加入Beta版计划](https://play.google.com/store/apps/details?id=com.shanjiancaofu.gallery.preview)
 2.  [蓝奏云](https://relaxpic.lanzouq.com/b00efss5uh) 密码: `8u51` ，<button onclick="navigator.clipboard.writeText('8u51')">点击复制</button>
-3.  [永硕E盘](http://relaxpic.ysepan.com)
-4.  [123网盘](https://www.123684.com/s/gBTtVv-bTTsd)
+3.  [123网盘](https://www.123684.com/s/gBTtVv-bTTsd)
+4.  [蒲公英](https://www.pgyer.com/mtll_dev)
+5.  [CloudFlare边缘节点](https://dl.immmy.com/download?file=apk/0.1.50-beta07.apk)
+6.  [Github](https://github.com/RelaxPic/relaxpic.github.io/releases)
 
