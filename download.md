@@ -1,6 +1,6 @@
 <a href="/#/test_download">切换到测试版下载</a>
 
-# 最新正式版发布时间2026-01-17 版本0.1.53 ,下载地址
+# 最新正式版发布时间2026-05-24 版本0.1.54 ,下载地址
 1.  [Google Play(推荐)](https://play.google.com/store/apps/details?id=com.shanjiancaofu.gallery.preview)
 2.  [蓝奏云](https://relaxpic.lanzouq.com/b048n3a1a) 密码: `9onb` ，<button onclick="navigator.clipboard.writeText('9onb')">点击复制</button>
 3.  [蒲公英](https://www.pgyer.com/mtll_dev)

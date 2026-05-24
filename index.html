@@ -52,11 +52,13 @@
 </nav>
 <div id="app"></div>
 <script>
+    const shouldLoadFooter = location.host === "relaxpic.cn";
+
     window.$docsify = {
         homepage: "readme.md",
         name: '',
         loadSidebar: true,
-  	loadFooter: true,
+  	loadFooter: shouldLoadFooter,
         repo: "https://github.com/RelaxPic/relaxpic.github.io",
         relativePath: true,
         // 初始化Fancybox
