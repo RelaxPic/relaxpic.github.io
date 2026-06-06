@@ -1,7 +1,7 @@
 <a href="/#/download">切换到正式版下载</a>
 
 
-# 最新测试版发布时间2026-05-20 版本0.1.55-beta01 ,下载地址
+# 最新测试版发布时间2026-06-05 版本0.1.55-beta01 ,下载地址
 
 1.  [Google Play加入Beta版计划](https://play.google.com/store/apps/details?id=com.shanjiancaofu.gallery.preview)
 2.  [蓝奏云](https://relaxpic.lanzouq.com/b00efss5uh) 密码: `8u51` ，<button onclick="navigator.clipboard.writeText('8u51')">点击复制</button>
