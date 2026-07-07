@@ -9,6 +9,70 @@
     <link rel="stylesheet" href="static/css/vue.css">
     <script src="static/js/docsify-edit-on-github.js"></script>
     <link href="static/css/lightbox.min.css" rel="stylesheet"/>
+    <style>
+        .sidebar-card {
+            display: block;
+            margin: 16px;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1f2937;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(31, 41, 55, .08);
+        }
+
+        .sidebar-card:hover {
+            color: #1f2937;
+            text-decoration: none;
+            border-color: #42b983;
+        }
+
+        .sidebar-card__tag {
+            display: inline-block;
+            margin-bottom: 8px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .sidebar-card__title {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .sidebar-card__text,
+        .sidebar-card__deal,
+        .sidebar-card__cta {
+            display: block;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .sidebar-card__deal {
+            margin-top: 6px;
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .sidebar-card__cta {
+            margin-top: 10px;
+            color: #047857;
+            font-weight: 700;
+        }
+
+        @media screen and (max-width: 768px) {
+            .content .sidebar-card {
+                margin: 0 16px 20px;
+            }
+        }
+    </style>
     <script>
         let gsTrackingId;
         if (location.host === "relaxpic.com") {
@@ -73,7 +137,26 @@
                     return 'edit on git'
                 }
             }),
-            function pageFooter(hook, vm) {
+            function sidebarCard(hook, vm) {
+                const cardHtml = '<a class="sidebar-card" href="https://www.aicodemirror.com/register?invitecode=BJ3O1V" target="_blank" rel="noopener"><span class="sidebar-card__tag">开发者推荐</span><strong class="sidebar-card__title">claude / codex / gemini 中转站</strong><span class="sidebar-card__deal">稳定可靠，Token 消耗最低 0.07 折</span><span class="sidebar-card__cta">立即领取邀请优惠</span></a>';
+
+                function placeCard() {
+                    const target = window.innerWidth <= 768
+                        ? document.querySelector('.content')
+                        : document.querySelector('.sidebar-nav');
+                    if (!target) {
+                        return;
+                    }
+
+                    const card = document.querySelector('.sidebar-card') || document.createRange().createContextualFragment(cardHtml).firstElementChild;
+                    target.prepend(card);
+                }
+
+                hook.doneEach(placeCard);
+                window.addEventListener('resize', placeCard);
+                hook.mounted(function () {
+                    setTimeout(placeCard, 0);
+                });
             },
         ],
     }
