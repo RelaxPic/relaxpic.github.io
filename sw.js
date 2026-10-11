@@ -51,7 +51,7 @@ self.addEventListener('fetch', event => {
             console.log('从网络获取最新内容:', url.pathname);
             const networkResponse = await fetch(event.request);
 
-            if (networkResponse.ok) {
+            if (networkResponse.ok && networkResponse.type === 'basic' && new URL(networkResponse.url).hostname === url.hostname) {
               // 将响应存储到版本化缓存中
               const cache = await caches.open(RUNTIME);
               await cache.put(versionedRequest, networkResponse.clone());
