@@ -1,0 +1,24 @@
+name: Inspect relaxpic.cn routing
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y sshpass
+      - name: Inspect website configuration
+        env:
+          SSHPASS: ${{ secrets.ROOT_PASSWORD }}
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=yes -o UserKnownHostsFile=.github/ssh_known_hosts root@116.196.73.207 '
+            find /opt/1panel/apps/openresty/openresty/conf /opt/1panel/apps/openresty/openresty/www/sites/relaxpic.cn -maxdepth 4 -type f -name "*.conf" -print
+            for file in /opt/1panel/apps/openresty/openresty/conf/conf.d/*relaxpic*; do
+              test -f "$file" || continue
+              echo "CONFIG: $file"
+              cat "$file"
+            done
+            docker ps --format "{{.Names}} {{.Image}}" | grep openresty
+          '
