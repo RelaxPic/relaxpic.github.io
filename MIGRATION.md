@@ -22,6 +22,8 @@ GitHub Pages Source 使用 GitHub Actions。推送 `master` 后，`.github/workf
 
 OpenResty 无后缀地址配置由手动工作流 `Configure relaxpic.cn routing` 管理，只修改本站虚拟主机。它先备份配置并检查语法，再重载；失败会恢复原配置。规则内部将 `/download` 映射到 HTML，并将显式 `.html` 请求重定向到无后缀地址，未知地址仍返回 404。
 
+完整可替换配置保存在 `deploy/relaxpic.cn.conf`，保留原有证书、日志与 HTTPS 设置。
+
 `public/static/js/segmentit.js` 是安卓 App 运行资源，不得删除或重新压缩；测试核对 App 固定的 SHA-256。`public/sw.js` 用于停用历史 Docsify Service Worker，请保留该路径。
 
 英文内容以后可放在 `/en/`，目前没有英文文档。完整迁移前文件（包含当时尚未提交的修改）备份在本机 `/home/song/GolandProjects/relaxpic-before-vitepress.vl8F5O/site-before-migration.tar.gz`，Git 提交历史也保留旧站源码。独立 VitePress 副本仍位于 `../relaxpic-vitepress`，此后以本仓库为维护入口。
