@@ -1,4 +1,4 @@
-name: Inspect relaxpic.cn routing
+name: Configure relaxpic.cn routing
 on:
   workflow_dispatch:
 permissions:
@@ -9,16 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt-get update && sudo apt-get install -y sshpass
-      - name: Inspect website configuration
+      - name: Check configuration update logic
+        run: python3 .github/scripts/configure_routes.py --test
+      - name: Back up and configure clean URLs
         env:
           SSHPASS: ${{ secrets.ROOT_PASSWORD }}
         run: |
-          sshpass -e ssh -o StrictHostKeyChecking=yes -o UserKnownHostsFile=.github/ssh_known_hosts root@116.196.73.207 '
-            find /opt/1panel/apps/openresty/openresty/conf /opt/1panel/apps/openresty/openresty/www/sites/relaxpic.cn -maxdepth 4 -type f -name "*.conf" -print
-            for file in /opt/1panel/apps/openresty/openresty/conf/conf.d/*relaxpic*; do
-              test -f "$file" || continue
-              echo "CONFIG: $file"
-              cat "$file"
-            done
-            docker ps --format "{{.Names}} {{.Image}}" | grep openresty
-          '
+          sshpass -e ssh -o StrictHostKeyChecking=yes -o UserKnownHostsFile=.github/ssh_known_hosts -o ConnectTimeout=20 root@116.196.73.207 'python3 -' < .github/scripts/configure_routes.py
+      - name: Verify clean URLs and redirects
+        run: |
+          curl --fail --silent --show-error https://relaxpic.cn/download | grep 'Google Play' > /dev/null
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' https://relaxpic.cn/download.html)" = 301
+          test "$(curl --silent --location --output /dev/null --write-out '%{url_effective}' https://relaxpic.cn/download.html)" = https://relaxpic.cn/download
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' https://relaxpic.cn/missing-route-for-check)" = 404
