@@ -31,3 +31,84 @@ jobs:
           path: .vitepress/dist
       - id: deployment
         uses: actions/deploy-pages@v4
+  deploy-ssh:
+    name: Deploy relaxpic.cn
+    needs: deploy
+    if: ${{ vars.ENABLE_SSH_DEPLOY == 'true' }}
+    runs-on: ubuntu-latest
+    environment: production-cn
+    permissions:
+      contents: read
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_PORT: ${{ vars.DEPLOY_PORT }}
+      DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      DEPLOY_BACKUP_PATH: ${{ vars.DEPLOY_BACKUP_PATH }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/pages
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            DEPLOY_HOST DEPLOY_PORT DEPLOY_USER DEPLOY_PATH
+            DEPLOY_BACKUP_PATH DEPLOY_SSH_PRIVATE_KEY DEPLOY_KNOWN_HOSTS
+          )
+          for name in "${required[@]}"; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing production-cn configuration: $name"
+              exit 1
+            fi
+          done
+          if ! [[ "$DEPLOY_PORT" =~ ^[0-9]+$ ]] || (( DEPLOY_PORT < 1 || DEPLOY_PORT > 65535 )); then
+            echo '::error::DEPLOY_PORT must be between 1 and 65535.'
+            exit 1
+          fi
+          if ! [[ "$DEPLOY_USER" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
+            echo '::error::DEPLOY_USER contains unsupported characters.'
+            exit 1
+          fi
+          for name in DEPLOY_PATH DEPLOY_BACKUP_PATH; do
+            value=${!name}
+            if [[ "$value" != /* || "$value" == *$'\n'* || "$value" == *$'\r'* ]]; then
+              echo "::error::$name must be an absolute path without line breaks."
+              exit 1
+            fi
+          done
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          ssh-keygen -y -f "$HOME/.ssh/id_ed25519" > /dev/null
+      - name: Back up and publish the built site
+        shell: bash
+        run: |
+          set -euo pipefail
+          site=$(printf '%q' "$DEPLOY_PATH")
+          backup=$(printf '%q' "$DEPLOY_BACKUP_PATH")
+          ssh -i "$HOME/.ssh/id_ed25519" -p "$DEPLOY_PORT" \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o ConnectTimeout=20 \
+            -o ServerAliveInterval=15 \
+            -o ServerAliveCountMax=2 \
+            -o PreferredAuthentications=publickey \
+            -o PasswordAuthentication=no \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "set -eu; site=$site; backup=$backup; \
+            test -d \"\$site\"; \
+            mkdir -p \"\$backup\"; \
+            tar -czf \"\$backup/site-${GITHUB_SHA}-\$(date +%s).tar.gz\" -C \"\$site\" .; \
+            tar -xf - -C \"\$site\"" < "$RUNNER_TEMP/pages/artifact.tar"
+      - name: Verify the published site
+        run: |
+          curl --fail --silent --show-error --retry 3 https://relaxpic.cn/ | grep -q 'name="generator" content="VitePress'
+          curl --fail --silent --show-error --retry 3 https://relaxpic.cn/download | grep -q 'Google Play'
+          curl --fail --silent --show-error --retry 3 https://relaxpic.cn/static/js/segmentit.js | sha256sum --check <(echo '7638d730acaf3d318b886822c0c0e66399977c7ece0370fb41b790776506a155  -')

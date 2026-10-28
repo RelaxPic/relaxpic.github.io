@@ -14,8 +14,20 @@ npm run preview
 
 GitHub Pages Source 使用 GitHub Actions。推送 `master` 后，`.github/workflows/deploy.yml` 安装依赖、构建、检查并发布 `.vitepress/dist`，无需提交构建产物。自定义域名沿用 `relaxpic.com`，配置位于 `public/CNAME`。
 
-旧 App 的 `/#/download`、协议、帮助及更新日志入口保留兼容；`//#/changelog` 需要服务器返回新站首页或生成的 `404.html`。其他服务器也需支持 `/download` 返回 `download.html`。`.cn` 服务器不由本仓库的 GitHub Pages 发布自动更新。
+同一个工作流可将相同构建产物通过 SSH 发布到 `relaxpic.cn`。部署使用无密码、最小权限的专用账户和独立 SSH 密钥；连接信息由 `production-cn` Environment 的 Secrets 与 Variables 提供，不写入仓库。启用前必须人工核验服务器主机公钥并完成服务器端权限配置。
+
+`production-cn` Environment 需要配置 Secrets `DEPLOY_HOST`、`DEPLOY_SSH_PRIVATE_KEY`、`DEPLOY_KNOWN_HOSTS`，以及 Variables `DEPLOY_PORT`、`DEPLOY_USER`、`DEPLOY_PATH`、`DEPLOY_BACKUP_PATH`。非默认 SSH 端口的 known-hosts 主机字段应使用 `[host]:port` 格式。部署账户只需拥有站点和备份目录的读写权限，不应授予通用 sudo 或交互式密码登录权限。
+
+SSH 发布由仓库变量 `ENABLE_SSH_DEPLOY=true` 启用；未完成配置时保持关闭，GitHub Pages 仍会正常发布。上传前在服务器保存带提交号和时间的整站备份，然后覆盖静态文件，不删除原站其他文件。上传完成后验证 `.cn` 首页和 App 运行资源的校验值。备份暂不自动清理，磁盘空间不足时需人工整理。GitHub Pages 成功、SSH 失败时，`.com` 保持已发布状态，可在修复配置后重新运行工作流。
+
+旧 App 的 `/#/download`、协议、帮助及更新日志入口保留兼容；`//#/changelog` 需要服务器返回新站首页或生成的 `404.html`。其他服务器也需支持 `/download` 返回 `download.html`。
+
+OpenResty 无后缀地址配置由手动工作流 `Configure relaxpic.cn routing` 管理，使用独立的 `maintenance-cn` Environment 和维护密钥。它先备份配置并检查语法，再重载；失败会恢复原配置。规则内部将 `/download` 映射到 HTML，并将显式 `.html` 请求重定向到无后缀地址，未知地址仍返回 404。
+
+`maintenance-cn` Environment 需要配置 Secrets `MAINTENANCE_HOST`、`MAINTENANCE_SSH_PRIVATE_KEY`、`MAINTENANCE_KNOWN_HOSTS`，以及 Variables `MAINTENANCE_PORT`、`MAINTENANCE_USER`、`OPENRESTY_CONFIG_PATH`、`OPENRESTY_BACKUP_PATH`、`OPENRESTY_CONTAINER`、`OPENRESTY_SITE_ROOT`。维护密钥与日常部署密钥分离，仅在手动运行路由工作流时使用。
+
+完整配置模板保存在 `deploy/relaxpic.cn.conf`，部署前需按服务器实际目录核对证书、日志和站点路径。
 
 `public/static/js/segmentit.js` 是安卓 App 运行资源，不得删除或重新压缩；测试核对 App 固定的 SHA-256。`public/sw.js` 用于停用历史 Docsify Service Worker，请保留该路径。
 
-英文内容以后可放在 `/en/`，目前没有英文文档。完整迁移前文件（包含当时尚未提交的修改）备份在本机 `/home/song/GolandProjects/relaxpic-before-vitepress.vl8F5O/site-before-migration.tar.gz`，Git 提交历史也保留旧站源码。独立 VitePress 副本仍位于 `../relaxpic-vitepress`，此后以本仓库为维护入口。
+英文内容以后可放在 `/en/`，目前没有英文文档。完整迁移前文件（包含当时尚未提交的修改）已备份在本机，Git 提交历史也保留旧站源码。独立 VitePress 副本仍位于相邻目录，此后以本仓库为维护入口。

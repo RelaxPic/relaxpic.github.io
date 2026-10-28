@@ -1,5 +1,13 @@
 node_modules/
+__pycache__/
 .vitepress/cache/
 .vitepress/dist/
 .playwright-mcp/
 .idea/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+/deploy_ssh.py
+/upload_ftp.py

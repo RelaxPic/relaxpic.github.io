@@ -1,0 +1,83 @@
+name: Configure relaxpic.cn routing
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    environment: maintenance-cn
+    env:
+      MAINTENANCE_HOST: ${{ secrets.MAINTENANCE_HOST }}
+      MAINTENANCE_PORT: ${{ vars.MAINTENANCE_PORT }}
+      MAINTENANCE_USER: ${{ vars.MAINTENANCE_USER }}
+      OPENRESTY_CONFIG_PATH: ${{ vars.OPENRESTY_CONFIG_PATH }}
+      OPENRESTY_BACKUP_PATH: ${{ vars.OPENRESTY_BACKUP_PATH }}
+      OPENRESTY_CONTAINER: ${{ vars.OPENRESTY_CONTAINER }}
+      OPENRESTY_SITE_ROOT: ${{ vars.OPENRESTY_SITE_ROOT }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check configuration update logic
+        run: python3 .github/scripts/configure_routes.py --test
+      - name: Configure maintenance SSH
+        env:
+          MAINTENANCE_SSH_PRIVATE_KEY: ${{ secrets.MAINTENANCE_SSH_PRIVATE_KEY }}
+          MAINTENANCE_KNOWN_HOSTS: ${{ secrets.MAINTENANCE_KNOWN_HOSTS }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            MAINTENANCE_HOST MAINTENANCE_PORT MAINTENANCE_USER
+            MAINTENANCE_SSH_PRIVATE_KEY MAINTENANCE_KNOWN_HOSTS
+            OPENRESTY_CONFIG_PATH OPENRESTY_BACKUP_PATH
+            OPENRESTY_CONTAINER OPENRESTY_SITE_ROOT
+          )
+          for name in "${required[@]}"; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing maintenance-cn configuration: $name"
+              exit 1
+            fi
+          done
+          if ! [[ "$MAINTENANCE_PORT" =~ ^[0-9]+$ ]] || (( MAINTENANCE_PORT < 1 || MAINTENANCE_PORT > 65535 )); then
+            echo '::error::MAINTENANCE_PORT must be between 1 and 65535.'
+            exit 1
+          fi
+          if ! [[ "$MAINTENANCE_USER" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
+            echo '::error::MAINTENANCE_USER contains unsupported characters.'
+            exit 1
+          fi
+          for name in OPENRESTY_CONFIG_PATH OPENRESTY_BACKUP_PATH OPENRESTY_SITE_ROOT; do
+            value=${!name}
+            if [[ "$value" != /* || "$value" == *$'\n'* || "$value" == *$'\r'* ]]; then
+              echo "::error::$name must be an absolute path without line breaks."
+              exit 1
+            fi
+          done
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$MAINTENANCE_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$MAINTENANCE_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          ssh-keygen -y -f "$HOME/.ssh/id_ed25519" > /dev/null
+      - name: Back up and configure clean URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          config=$(printf '%q' "$OPENRESTY_CONFIG_PATH")
+          backup=$(printf '%q' "$OPENRESTY_BACKUP_PATH")
+          container=$(printf '%q' "$OPENRESTY_CONTAINER")
+          site_root=$(printf '%q' "$OPENRESTY_SITE_ROOT")
+          ssh -i "$HOME/.ssh/id_ed25519" -p "$MAINTENANCE_PORT" \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o ConnectTimeout=20 \
+            -o PreferredAuthentications=publickey \
+            -o PasswordAuthentication=no \
+            "$MAINTENANCE_USER@$MAINTENANCE_HOST" \
+            "python3 - --config $config --backup $backup --container $container --site-root $site_root" \
+            < .github/scripts/configure_routes.py
+      - name: Verify clean URLs and redirects
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 2 https://relaxpic.cn/download | grep -q 'Google Play'
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' https://relaxpic.cn/download.html)" = 301
+          test "$(curl --silent --location --output /dev/null --write-out '%{url_effective}' https://relaxpic.cn/download.html)" = https://relaxpic.cn/download
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' https://relaxpic.cn/missing-route-for-check)" = 404
