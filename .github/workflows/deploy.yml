@@ -31,3 +31,46 @@ jobs:
           path: .vitepress/dist
       - id: deployment
         uses: actions/deploy-pages@v4
+  deploy-ssh:
+    name: Deploy relaxpic.cn
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/pages
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+      - name: Back up and publish the built site
+        env:
+          SSHPASS: ${{ secrets.ROOT_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$SSHPASS" ]; then
+            echo '::error::Add the ROOT_PASSWORD repository secret before deploying relaxpic.cn.'
+            exit 1
+          fi
+          sshpass -e ssh -p 22 \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile=.github/ssh_known_hosts \
+            -o ConnectTimeout=20 \
+            -o ServerAliveInterval=15 \
+            -o ServerAliveCountMax=2 \
+            -o PreferredAuthentications=keyboard-interactive,password \
+            -o PubkeyAuthentication=no \
+            root@116.196.73.207 \
+            "set -eu; site=/opt/1panel/apps/openresty/openresty/www/sites/relaxpic.cn/index; \
+            test -d \"\$site\"; \
+            backup=/opt/1panel/apps/openresty/openresty/www/sites/relaxpic.cn/backups; \
+            mkdir -p \"\$backup\"; \
+            tar -czf \"\$backup/site-${GITHUB_SHA}-\$(date +%s).tar.gz\" -C \"\$site\" .; \
+            tar -xf - -C \"\$site\"" < "$RUNNER_TEMP/pages/artifact.tar"
+      - name: Verify the published site
+        run: |
+          curl --fail --silent --show-error --retry 3 https://relaxpic.cn/ | grep -q 'name="generator" content="VitePress'
+          curl --fail --silent --show-error --retry 3 https://relaxpic.cn/static/js/segmentit.js | sha256sum --check <(echo '7638d730acaf3d318b886822c0c0e66399977c7ece0370fb41b790776506a155  -')
