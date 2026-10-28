@@ -31,12 +31,14 @@
 
 
  <div>
-      <a style="margin-right: 10px" href="static/images/preview/1.webp" data-lightbox="example-set" data-title="时间线"><img  src="static/images/preview/1.webp" width="200" height="447" alt=""/></a>
-      <a  href="static/images/preview/6.webp" data-lightbox="example-set" data-title="打开隐私空间"><img    src="static/images/preview/6.webp" width="200" height="447" alt="" /></a>
-      <a style="margin-right: 10px" href="static/images/preview/2.webp" data-lightbox="example-set" data-title="应用设置"><img  src="static/images/preview/2.webp" width="200" height="447" alt=""/></a>
-      <a style="margin-right: 10px" href="static/images/preview/3.webp" data-lightbox="example-set" data-title="隐私空间"><img  src="static/images/preview/3.webp" width="200" height="447" alt=""/></a>
-      <a style="margin-right: 10px" href="static/images/preview/4.webp" data-lightbox="example-set" data-title="最近浏览的图片"><img  src="static/images/preview/4.webp" width="200" height="447" alt=""/></a>
-      <a  href="static/images/preview/5.webp" data-lightbox="example-set" data-title="保存照片到隐私空间"><img    src="static/images/preview/5.webp" width="200" height="447" alt="" /></a>
+      <a style="margin-right: 10px" href="public/static/images/preview/1.webp" data-lightbox="example-set" data-title="时间线"><img  src="public/static/images/preview/1.webp" width="200" height="447" alt=""/></a>
+      <a style="margin-right: 10px" href="public/static/images/preview/2.webp" data-lightbox="example-set" data-title="应用设置"><img  src="public/static/images/preview/2.webp" width="200" height="447" alt=""/></a>
+      <a style="margin-right: 10px" href="public/static/images/preview/3.webp" data-lightbox="example-set" data-title="隐私空间"><img  src="public/static/images/preview/3.webp" width="200" height="447" alt=""/></a>
+      <a style="margin-right: 10px" href="public/static/images/preview/4.webp" data-lightbox="example-set" data-title="最近浏览的图片"><img  src="public/static/images/preview/4.webp" width="200" height="447" alt=""/></a>
+      <a  href="public/static/images/preview/5.webp" data-lightbox="example-set" data-title="1"><img    src="public/static/images/preview/5.webp" width="200" height="447" alt="" /></a>
+      <a  href="public/static/images/preview/6.webp" data-lightbox="example-set" data-title="打开隐私空间"><img    src="public/static/images/preview/6.webp" width="200" height="447" alt="" /></a>
+      <a  href="public/static/images/preview/7.webp" data-lightbox="example-set" data-title="3"><img    src="public/static/images/preview/7.webp" width="200" height="447" alt="" /></a>
+      <a  href="public/static/images/preview/8.webp" data-lightbox="example-set" data-title="3"><img    src="public/static/images/preview/8.webp" width="200" height="447" alt="" /></a>
  </div>
 
 

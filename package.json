@@ -1,0 +1,19 @@
+{
+  "name": "relaxpic-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev --host 127.0.0.1",
+    "build": "vitepress build && pagefind --site .vitepress/dist --exclude-selectors .header-anchor,.copy-button,.sr-only",
+    "preview": "vitepress preview --host 127.0.0.1",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@pagefind/default-ui": "^1.5.2",
+    "pagefind": "^1.5.2",
+    "vitepress": "1.6.4"
+  },
+  "overrides": {
+    "vite": "6.4.5"
+  }
+}

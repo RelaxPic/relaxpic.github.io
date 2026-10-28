@@ -7,7 +7,7 @@
 - 在相册一列，下拉即可打开隐私空间，进入隐私空间需要输入PIN码
 
  <div>
-      <a  href="static/images/preview/6.webp" data-lightbox="example-set" data-title="打开隐私空间"><img    src="static/images/preview/6.webp" width="200" height="447" alt="" /></a>
+      <a  href="/static/images/preview/6.webp" data-lightbox="example-set" data-title="打开隐私空间"><img    src="/static/images/preview/6.webp" width="200" height="447" alt="打开隐私空间" /></a>
  </div>
 
 
